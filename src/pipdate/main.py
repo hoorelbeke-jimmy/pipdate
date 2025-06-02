@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 import appdirs
-import pkg_resources
+from importlib.metadata import distribution
 from packaging import version
 from rich.console import Console
 from rich.panel import Panel
@@ -104,7 +104,7 @@ def check(name, installed_version):
 
 def _is_pip_installed(name):
     try:
-        installer = pkg_resources.get_distribution(name).get_metadata("INSTALLER")
+        installer = distribution(name).read_text("INSTALLER")
     except FileNotFoundError:
         return False
     return installer.strip() == "pip"
